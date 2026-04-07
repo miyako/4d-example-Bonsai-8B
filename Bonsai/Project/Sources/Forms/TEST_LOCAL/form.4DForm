@@ -63,7 +63,8 @@
 					"fill": "transparent",
 					"showSelection": true,
 					"sizingX": "grow",
-					"sizingY": "grow"
+					"sizingY": "grow",
+					"hideFocusRing": true
 				},
 				"Continue Conversation": {
 					"type": "button",

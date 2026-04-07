@@ -3,6 +3,7 @@ property ChatResult : Text
 property model : Text
 property preemptive : Boolean
 property resultObjectName : Text
+property startObjectName : Text
 property continueObjectName : Text
 property promptObjectName : Text
 property messages : Collection
@@ -18,16 +19,18 @@ $promptObjectName : Text)
 	ASSERT:C1129($baseURL#"")
 	
 	This:C1470.resultObjectName:=$resultObjectName
+	This:C1470.startObjectName:=$startObjectName
 	This:C1470.continueObjectName:=$continueObjectName
 	This:C1470.promptObjectName:=$promptObjectName
 	This:C1470.stream:=True:C214
 	This:C1470.OpenAI:=cs:C1710.AIKit.OpenAI.new({baseURL: $baseURL})
 	This:C1470.preemptive:=Process info:C1843(Current process:C322).preemptive
 	
-Function focusUserPrompt()
+Function focusUserPrompt() : cs:C1710._Agent
 	
-	OBJECT SET ENABLED:C1123(*; Form:C1466.continueObjectName; True:C214)
 	GOTO OBJECT:C206(*; Form:C1466.promptObjectName)
+	
+	return Form:C1466
 	
 Function clearConversation() : cs:C1710._Agent
 	
@@ -37,8 +40,12 @@ Function clearConversation() : cs:C1710._Agent
 	If (Not:C34(This:C1470.preemptive))
 		//%T-
 		If (Form:C1466#Null:C1517)
-			OBJECT SET ENABLED:C1123(*; This:C1470.promptObjectName; False:C215)
-			OBJECT SET ENABLED:C1123(*; This:C1470.continueObjectName; False:C215)
+			If (FORM Event:C1606.code=On Load:K2:1)
+				OBJECT SET ENABLED:C1123(*; This:C1470.startObjectName; True:C214)
+				OBJECT SET ENABLED:C1123(*; This:C1470.continueObjectName; False:C215)
+				return This:C1470
+			End if 
+			This:C1470.onAfterEdit()
 		End if 
 		//%T-
 	End if 
@@ -51,7 +58,7 @@ Function continueConversation($messages : Collection) : cs:C1710.AIKit.OpenAICha
 		return 
 	End if 
 	
-	OBJECT SET ENABLED:C1123(*; This:C1470.promptObjectName; False:C215)
+	OBJECT SET ENABLED:C1123(*; This:C1470.startObjectName; False:C215)
 	OBJECT SET ENABLED:C1123(*; This:C1470.continueObjectName; False:C215)
 	
 	This:C1470.messages.combine($messages)
@@ -66,14 +73,6 @@ Function continueConversation($messages : Collection) : cs:C1710.AIKit.OpenAICha
 	$ChatCompletionsParameters.stream:=This:C1470.stream
 	$ChatCompletionsParameters.formula:=This:C1470.onEventStream
 	
-	var $class : 4D:C1709.Class
-	$class:=OB Class:C1730(This:C1470)
-	
-	Case of 
-		: ($class.name="Cohere")
-			OB REMOVE:C1226($ChatCompletionsParameters; "n")
-	End case 
-	
 	var $ChatCompletionsResult : cs:C1710.AIKit.OpenAIChatCompletionsResult
 	$ChatCompletionsResult:=This:C1470.OpenAI.chat.completions.create(This:C1470.messages; $ChatCompletionsParameters)
 	
@@ -85,7 +84,7 @@ Function startConversation($messages : Collection; $onResponse : 4D:C1709.Functi
 		return 
 	End if 
 	
-	OBJECT SET ENABLED:C1123(*; This:C1470.promptObjectName; False:C215)
+	OBJECT SET ENABLED:C1123(*; This:C1470.startObjectName; False:C215)
 	OBJECT SET ENABLED:C1123(*; This:C1470.continueObjectName; False:C215)
 	
 	If (OB Instance of:C1731($onResponse; 4D:C1709.Function))
@@ -170,7 +169,7 @@ Function onAfterEdit()
 	var $ready : Boolean
 	$ready:=(Get edited text:C655#"")
 	
-	OBJECT SET ENABLED:C1123(*; This:C1470.promptObjectName; $ready)
+	OBJECT SET ENABLED:C1123(*; This:C1470.startObjectName; $ready)
 	OBJECT SET ENABLED:C1123(*; This:C1470.continueObjectName; $ready)
 	
 	If (This:C1470._isFreshConversation())

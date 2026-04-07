@@ -11,7 +11,7 @@ Case of
 		
 		Form:C1466.systemPrompt:="You are a helpful assistant."
 		Form:C1466.userPrompt:="Who is the best French painter? Answer in one short sentence."
-		Form:C1466.clearConversation()
+		Form:C1466.focusUserPrompt().clearConversation()
 		
 	: ($event.code=On After Edit:K2:43)
 		
