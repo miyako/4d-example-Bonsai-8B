@@ -1,2 +1,1 @@
-# 4d-example-Bonsai-8B
-Bonsai-8B in GGUF
+## [prism-ml/Bonsai-8B-gguf](https://huggingface.co/prism-ml/Bonsai-8B-gguf)
