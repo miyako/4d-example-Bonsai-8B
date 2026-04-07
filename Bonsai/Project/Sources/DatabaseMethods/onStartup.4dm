@@ -34,7 +34,7 @@ $batch_size:=2048
 $max_position_embeddings:=8192
 $cache_type_k:="f16"
 $cache_type_v:="f16"
-$n_gpu_layers:=0
+$n_gpu_layers:=99
 
 $logFile:=$folder.file("llama.log")
 $folder.create()
