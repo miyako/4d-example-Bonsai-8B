@@ -5,8 +5,4 @@
 
 ## Example
 
-<img width="630" height="428" alt="" src="https://github.com/user-attachments/assets/37a71be7-8e36-4689-822f-864bb7d9356b" />
-
-## Memory Consumption
-
-<img width="740" height="384" alt="" src="https://github.com/user-attachments/assets/e73ed1c3-9eeb-46b6-ae9a-27254c5dfa7c" />
+![](https://github.com/user-attachments/assets/6afa5f87-0b6a-43fa-803f-d62818dfc129)
