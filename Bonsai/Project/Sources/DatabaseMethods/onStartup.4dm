@@ -56,7 +56,7 @@ cache_type_k: $cache_type_k; \
 cache_type_v: $cache_type_v; \
 flash_attn: "on"; \
 n_predict: -1; \
-temp: 0.3; \
+temp: 0.7; \
 top_k: 40; \
 top_p: 0.9; \
 repeat_penalty: 1; \
